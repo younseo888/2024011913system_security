@@ -1,0 +1,14 @@
+#!/bin/bash
+
+echo "========== U-15 점검 : world writable 파일 점검 =========="
+
+WW_FILES=$(find / -type f -perm -0002 2>/dev/null)
+
+if [ -z "$WW_FILES" ]; then
+    echo "[양호] world writable 파일 없음"
+else
+    echo "[취약] world writable 파일 존재"
+    echo "$WW_FILES"
+fi
+
+echo ""
