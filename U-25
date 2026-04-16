@@ -1,0 +1,20 @@
+#!/bin/bash
+echo "========== U-25 점검 : NFS 접근 통제 =========="
+
+if systemctl is-active --quiet nfs-server; then
+    echo "[정보] NFS 서비스 실행 중"
+
+    if [ -f /etc/exports ]; then
+        if grep -E '\*|everyone' /etc/exports >/dev/null; then
+            echo "[취약] everyone 또는 전체 허용 설정 존재"
+            cat /etc/exports
+        else
+            echo "[양호] 접근 제한 설정 확인됨"
+            cat /etc/exports
+        fi
+    else
+        echo "[양호] /etc/exports 없음 (NFS 미사용)"
+    fi
+else
+    echo "[양호] NFS 서비스 비활성화"
+fi
